@@ -1,51 +1,49 @@
-// Require the necessary discord.js classes and other modules
-const { Client, Events, GatewayIntentBits } = require("discord.js");
-const dotENV = require("dotenv").config();
-const express = require("express");
+const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
+const { clientId, guildId, token } = require("./config.json");
 
-// Create a new client instance with intents
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages, // Needed to receive messages in guilds
-  ],
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+const commands = [
+  {
+    name: "ping",
+    description: "Replies with Pong!",
+  },
+  {
+    name: "hello",
+    description: "Replies with Hello World!",
+  },
+];
+
+const rest = new REST({ version: "10" }).setToken(token);
+
+(async () => {
+  try {
+    console.log("Started refreshing application (/) commands.");
+
+    await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+      body: commands,
+    });
+
+    console.log("Successfully reloaded application (/) commands.");
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
-// When the client is ready, run this code (only once).
-client.once(Events.ClientReady, (readyClient) => {
-  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-});
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
 
-// Log in to Discord with your client's token
-client.login(process.env.DISCORD_TOKEN);
+  const { commandName } = interaction;
 
-// Set up an Express application
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Define routes for your Express application
-app.get("/", (req, res) => {
-  res.send("Hello from your bot's web server!");
-});
-
-// Start the Express server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-// Event listener for when the bot joins a new guild
-client.on("guildCreate", (guild) => {
-  console.log(`Joined a new guild: ${guild.name}`);
-});
-
-// Event listener for creating messages
-client.on("messageCreate", (msg) => {
-  if (msg.content.toLowerCase() === "lgn") {
-    // Make sure to handle case sensitivity
-    msg.reply(`Hello ${msg.author.username}, LGN is the GOAT!`);
+  if (commandName === "ping") {
+    await interaction.reply("Pong!");
+  } else if (commandName === "hello") {
+    await interaction.reply("Hello World!");
   }
 });
 
-// Console log any errors or warnings
-client.on("error", console.error);
-client.on("warn", console.warn);
+client.login(token);
