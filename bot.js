@@ -47,7 +47,6 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-// Set up Express web server
 const PORT = process.env.PORT || 3000; // Use the PORT environment variable or fallback to 3000
 app.get("/", (req, res) => {
   res.send("Bot is operational!");
