@@ -1,10 +1,15 @@
-// Require the necessary discord.js classes
+// Require the necessary discord.js classes and other modules
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 const dotENV = require("dotenv").config();
-const express = require("express"); // Import Express
+const express = require("express");
 
-// Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+// Create a new client instance with intents
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages, // Needed to receive messages in guilds
+  ],
+});
 
 // When the client is ready, run this code (only once).
 client.once(Events.ClientReady, (readyClient) => {
@@ -16,7 +21,7 @@ client.login(process.env.DISCORD_TOKEN);
 
 // Set up an Express application
 const app = express();
-const PORT = process.env.PORT || 3000; // Set the port to listen on
+const PORT = process.env.PORT || 3000;
 
 // Define routes for your Express application
 app.get("/", (req, res) => {
@@ -35,8 +40,12 @@ client.on("guildCreate", (guild) => {
 
 // Event listener for creating messages
 client.on("messageCreate", (msg) => {
-  if (msg.content === "lgn") {
+  if (msg.content.toLowerCase() === "lgn") {
+    // Make sure to handle case sensitivity
     msg.reply(`Hello ${msg.author.username}, LGN is the GOAT!`);
   }
-  console.log(`Received message: ${msg.content}`);
 });
+
+// Console log any errors or warnings
+client.on("error", console.error);
+client.on("warn", console.warn);
