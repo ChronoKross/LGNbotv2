@@ -45,6 +45,12 @@ client.on("interactionCreate", async (interaction) => {
   } else if (commandName === "hello") {
     await interaction.reply("Hello World!");
   }
+
+  if (commandName === "lgn") {
+    await interaction.reply("LGN IS #1!!!!");
+  } else if (commandName === "hello") {
+    await interaction.reply("Hello World!");
+  }
 });
 
 const PORT = process.env.PORT || 3000; // Use the PORT environment variable or fallback to 3000
