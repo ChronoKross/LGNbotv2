@@ -1,7 +1,10 @@
 const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
+const express = require("express");
 require("dotenv").config();
 
+const app = express();
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 const commands = [
   {
@@ -14,18 +17,14 @@ const commands = [
   },
 ];
 
-const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
-
-// Register commands globally instead of a specific guild
+// Register commands globally
 (async () => {
   try {
     console.log("Started refreshing application (/) commands globally.");
-
     await rest.put(
       Routes.applicationCommands(process.env.CLIENT_ID), // Changed to global command registration
       { body: commands }
     );
-
     console.log("Successfully reloaded application (/) commands globally.");
   } catch (error) {
     console.error(error);
@@ -41,12 +40,21 @@ client.on("interactionCreate", async (interaction) => {
 
   const { commandName } = interaction;
 
-  if (commandName === "ping".toLowerCase()) {
-    // This conversion is redundant as commandName is already processed to match exactly
+  if (commandName === "ping") {
     await interaction.reply("Pong!");
   } else if (commandName === "hello") {
     await interaction.reply("Hello World!");
   }
+});
+
+// Set up Express web server
+const PORT = process.env.PORT || 3000; // Use the PORT environment variable or fallback to 3000
+app.get("/", (req, res) => {
+  res.send("Bot is operational!");
+});
+
+app.listen(PORT, () => {
+  console.log(`Express server is running on port ${PORT}`);
 });
 
 client.login(process.env.TOKEN);
