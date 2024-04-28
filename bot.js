@@ -48,18 +48,11 @@ client.on("interactionCreate", async (interaction) => {
     await interaction.reply("Pong!");
   } else if (commandName === "hello") {
     await interaction.reply("Hello World!");
-  }
-  if (commandName === "lgn") {
+  } else if (commandName === "lgn") {
     await interaction.reply("LGN is #1!");
-  } else if (commandName === "what time is it?") {
+  } else if (commandName === "whattimeisit") {
     const time = new Date().toLocaleTimeString();
-    await interaction.reply(time);
-  }
-
-  if (commandName === "lgn") {
-    await interaction.reply("LGN IS #1!!!!");
-  } else if (commandName === "hello") {
-    await interaction.reply("Hello World!");
+    await interaction.reply(`The current time is ${time}`);
   }
 });
 
