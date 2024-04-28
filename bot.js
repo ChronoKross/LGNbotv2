@@ -15,6 +15,10 @@ const commands = [
     name: "hello",
     description: "Replies with Hello World!",
   },
+  {
+    name: "lgn",
+    description: "Replies with LGN is #1!",
+  },
 ];
 
 // Register commands globally
@@ -44,6 +48,12 @@ client.on("interactionCreate", async (interaction) => {
     await interaction.reply("Pong!");
   } else if (commandName === "hello") {
     await interaction.reply("Hello World!");
+  }
+  if (commandName === "lgn") {
+    await interaction.reply("LGN is #1!");
+  } else if (commandName === "what time is it?") {
+    const time = new Date().toLocaleTimeString();
+    await interaction.reply(time);
   }
 
   if (commandName === "lgn") {
