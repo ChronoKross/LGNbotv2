@@ -1,5 +1,5 @@
 const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
-const { clientId, guildId, token } = require("./config.json");
+require("dotenv").config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -14,17 +14,19 @@ const commands = [
   },
 ];
 
-const rest = new REST({ version: "10" }).setToken(token);
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
+// Register commands globally instead of a specific guild
 (async () => {
   try {
-    console.log("Started refreshing application (/) commands.");
+    console.log("Started refreshing application (/) commands globally.");
 
-    await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-      body: commands,
-    });
+    await rest.put(
+      Routes.applicationCommands(process.env.CLIENT_ID), // Changed to global command registration
+      { body: commands }
+    );
 
-    console.log("Successfully reloaded application (/) commands.");
+    console.log("Successfully reloaded application (/) commands globally.");
   } catch (error) {
     console.error(error);
   }
@@ -39,11 +41,12 @@ client.on("interactionCreate", async (interaction) => {
 
   const { commandName } = interaction;
 
-  if (commandName === "ping") {
+  if (commandName === "ping".toLowerCase()) {
+    // This conversion is redundant as commandName is already processed to match exactly
     await interaction.reply("Pong!");
   } else if (commandName === "hello") {
     await interaction.reply("Hello World!");
   }
 });
 
-client.login(token);
+client.login(process.env.TOKEN);
