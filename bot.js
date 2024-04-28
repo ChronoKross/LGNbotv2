@@ -46,6 +46,6 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-console.log("Bot is running!");
+console;
 
 client.login(token);
