@@ -25,4 +25,10 @@ client.on("messageCreate", (msg) => {
     console.log(`Joined a new guild: ${guild.name}`);
     // Additional logic can be implemented here
   });
+  client.on("messageCreate", (msg) => {
+    console.log(`Received message: ${msg.content}`);
+    if (msg.content === "lgn") {
+      msg.reply(`Hello ${msg.author.username}, LGN is the GOAT!`);
+    }
+  });
 });
