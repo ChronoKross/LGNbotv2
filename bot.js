@@ -15,3 +15,9 @@ client.once(Events.ClientReady, (readyClient) => {
 
 // Log in to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);
+
+client.on('messageCreate', msg => {
+// You can view the msg object here with console.log(msg)
+ if (msg.content === 'lgn') {
+   msg.reply(`Hello ${msg.author.username}, LGN is the GOAT!`);
+ }
