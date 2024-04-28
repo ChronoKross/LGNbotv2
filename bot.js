@@ -20,4 +20,9 @@ client.on("messageCreate", (msg) => {
   if (msg.content === "lgn") {
     msg.reply(`Hello ${msg.author.username}, LGN is the GOAT!`);
   }
+
+  client.on("guildCreate", (guild) => {
+    console.log(`Joined a new guild: ${guild.name}`);
+    // Additional logic can be implemented here
+  });
 });
