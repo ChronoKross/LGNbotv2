@@ -46,6 +46,6 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-console;
+co;
 
 client.login(token);
