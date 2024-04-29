@@ -1,6 +1,6 @@
 // app.js
 
-const startExpress () =>{
+const startExpress = () => {
   const express = require("express");
   require("dotenv").config();
   const app = express();
@@ -13,6 +13,6 @@ const startExpress () =>{
   app.listen(PORT, () => {
     console.log(`Express server is running on port ${PORT}`);
   });
-}
+};
 
 module.exports = startExpress;
