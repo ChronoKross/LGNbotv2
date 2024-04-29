@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 
 const createGoogleAuth = () => {
-  // Read the credentials from keys.json
-  const keysPath = path.join(__dirname, "keys.json");
+  // Read the credentials from keys.json in the root directory
+  const keysPath = path.join(__dirname, "..", "keys.json");
   const keys = JSON.parse(fs.readFileSync(keysPath));
 
   const auth = new google.auth.JWT({
