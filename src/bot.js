@@ -5,6 +5,7 @@ const {
   setupEventListeners,
 } = require("./util/botUtils");
 const createGoogleAuth = require("./util/googleAuth"); // Import the GoogleAuth function
+const startExpress = require("./app");
 
 require("dotenv").config();
 
@@ -25,3 +26,4 @@ const googleAuth = createGoogleAuth({
 setupEventListeners(client);
 
 client.login(process.env.TOKEN);
+startExpress();
