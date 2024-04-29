@@ -1,16 +1,19 @@
 const { google } = require("googleapis");
-require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
 
 const createGoogleAuth = () => {
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY,
-    },
+  // Read the credentials from keys.json
+  const keysPath = path.join(__dirname, "keys.json");
+  const keys = JSON.parse(fs.readFileSync(keysPath));
+
+  const auth = new google.auth.JWT({
+    email: keys.client_email,
+    key: keys.private_key,
     scopes: ["https://www.googleapis.com/auth/calendar"],
   });
 
-  return google.auth.getClient({ auth });
+  return auth;
 };
 
 module.exports = createGoogleAuth;

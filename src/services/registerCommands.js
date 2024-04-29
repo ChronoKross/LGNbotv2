@@ -6,6 +6,7 @@ async function registerCommands(commands) {
   const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
   try {
     console.log("Started refreshing application (/) commands globally.");
+    console.log("hello");
     await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
       body: commands,
     });

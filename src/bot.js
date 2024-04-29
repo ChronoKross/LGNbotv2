@@ -7,11 +7,11 @@ const {
 const createGoogleAuth = require("./util/googleAuth"); // Import the GoogleAuth function
 const startExpress = require("./app");
 const { google } = require("googleapis");
-
+console.log("Hello World");
 require("dotenv").config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
   await registerGlobalCommands(rest, commands);
@@ -19,7 +19,7 @@ const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 setupEventListeners(client);
 
-client.login(process.env.TOKEN);
+client.login(process.env.DISCORD_TOKEN);
 startExpress();
 (async () => {
   const authClient = await createGoogleAuth();
