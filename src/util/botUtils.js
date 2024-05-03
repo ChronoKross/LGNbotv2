@@ -49,6 +49,10 @@ async function setupEventListeners(client) {
       await interaction.reply("Hello World!");
     } else if (commandName === "lgn") {
       await interaction.reply("LGN is #1!");
+    } else if (commandName === "getcalendar") {
+      await interaction.reply(
+        "To add events to the calendar, use this link: https://calendar.google.com/calendar/u/0?cid=ZDc2MDlkNGRiZTc0Y2E5YmViZjczMTAzYTY2MDg4OWIwMTQ5YzM1ODVkMzQ0NWQwZThlMTY3ZjQ0MzBhNjkwNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
+      );
     } else if (commandName === "whattimeisit") {
       const time = new Date().toLocaleTimeString();
       await interaction.reply(`The current time is ${time}`);
