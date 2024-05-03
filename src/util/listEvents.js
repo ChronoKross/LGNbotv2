@@ -1,3 +1,5 @@
+const { google } = require("googleapis");
+
 const monthNames = [
   "January",
   "February",
@@ -41,3 +43,5 @@ async function listEvents(
     throw error;
   }
 }
+
+module.exports = listEvents; // Export the listEvents function
