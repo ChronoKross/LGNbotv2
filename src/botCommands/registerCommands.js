@@ -1,14 +1,7 @@
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 require("dotenv").config(); // Make sure to have your .env file with necessary IDs and token
-
-const commands = [
-  {
-    name: "listevents",
-    description: "Lists upcoming events from the Google Calendar",
-  },
-  // Add more commands here if needed
-];
+const commands = require("./botCommands/botCommands");
 
 const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
 
