@@ -1,18 +1,25 @@
-/**
- * Fetches and logs a list of upcoming events from a specified Google Calendar.
- *
- * @param {Object} calendar - The Google Calendar API object.
- * @param {String} calendarId - The ID of the calendar from which to fetch events.
- * @param {Date} startDate - The start date from which to begin fetching events.
- * @param {Number} maxResults - The maximum number of events to fetch.
- * @returns {Array} An array of events.
- */
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 async function listEvents(
-  calendar,
-  calendarId = "primary",
+  authClient,
+  calendarId,
   startDate = new Date(),
   maxResults = 10
 ) {
+  const calendar = google.calendar({ version: "v3", auth: authClient });
   try {
     const res = await calendar.events.list({
       calendarId,
@@ -22,24 +29,15 @@ async function listEvents(
       orderBy: "startTime",
     });
 
-    console.log("Upcoming Events:");
-    if (res.data.items.length === 0) {
-      console.log("No upcoming events found.");
-      return []; // Return an empty array if no events are found
-    }
-
-    const events = res.data.items.map((event) => {
-      const eventDate = event.start.dateTime || event.start.date;
-      const eventSummary = event.summary;
-      console.log(`${eventDate} - ${eventSummary}`);
-      return { date: eventDate, summary: eventSummary }; // Return event details in an object format
+    return res.data.items.map((event) => {
+      const eventDate = new Date(event.start.dateTime || event.start.date);
+      const formattedDate = `${
+        monthNames[eventDate.getMonth()]
+      } ${eventDate.getDate()}, ${eventDate.getFullYear()}`;
+      return { date: formattedDate, summary: event.summary };
     });
-
-    return events; // Return the array of event objects
   } catch (error) {
     console.error("Error fetching events:", error);
-    throw error; // Rethrow the error to handle it in the caller
+    throw error;
   }
 }
-
-module.exports = listEvents;

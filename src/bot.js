@@ -4,7 +4,7 @@ const {
   registerGlobalCommands,
   setupEventListeners,
 } = require("./util/botUtils");
-const listEvents = require("./util/listEvents"); // Make sure this is the correct path
+const listEvents = require("./util/listEvents"); // Ensure this is imported correctly
 const createGoogleAuth = require("./util/googleAuth");
 const startExpress = require("./app");
 const { google } = require("googleapis");
@@ -27,15 +27,13 @@ client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
   if (interaction.commandName === "listevents") {
-    const authClient = await createGoogleAuth();
-    const calendar = google.calendar({ version: "v3", auth: authClient });
-
-    const calendarId =
-      "d7609d4dbe74ca9bebf73103a660889b0149c3585d3445d0e8e167f4430a6906@group.calendar.google.com";
-
     try {
-      // Use the listEvents function to handle the logic
-      const events = await listEvents(calendar, calendarId, new Date(), 10);
+      const authClient = await createGoogleAuth();
+      const calendarId =
+        "d7609d4dbe74ca9bebf73103a660889b0149c3585d3445d0e8e167f4430a6906@group.calendar.google.com";
+
+      // Call the listEvents function with the correct parameters
+      const events = await listEvents(authClient, calendarId);
       if (events.length === 0) {
         await interaction.reply("No upcoming events found.");
       } else {
