@@ -25,6 +25,10 @@ function setupEventListeners(client) {
     const { commandName } = interaction;
     console.log("Hello TDW");
 
+    if (commandName === "listevents") {
+      await interaction.reply(`${listEvents()}`);
+    }
+
     if (commandName === "ping") {
       await interaction.reply("Pong!");
     } else if (commandName == "listevents") {
