@@ -16,9 +16,7 @@ const monthNames = [
 ];
 
 function formatDateTime(date, timezoneOffset) {
-  const adjustedDate = new Date(
-    date.getTime() + timezoneOffset * 60 * 60 * 1000
-  );
+  const adjustedDate = new Date(date.getTime() + timezoneOffset * 3600000); // Milliseconds offset
   const month = monthNames[adjustedDate.getUTCMonth()];
   const day = adjustedDate.getUTCDate();
   const year = adjustedDate.getUTCFullYear();
@@ -47,14 +45,22 @@ async function listEvents(
     });
 
     return res.data.items.map((event) => {
-      const utcDate = new Date(event.start.dateTime || event.start.date);
-      const utcFormatted = formatDateTime(utcDate, 0); // UTC time
-      const estFormatted = formatDateTime(utcDate, -5); // EST time (UTC-5)
-      return {
-        utcDate: utcFormatted,
-        estDate: estFormatted,
-        summary: event.summary,
-      };
+      if (event.start.dateTime || event.start.date) {
+        const eventDate = new Date(event.start.dateTime || event.start.date); // Ensure correct date parsing
+        const utcFormatted = formatDateTime(eventDate, 0); // UTC time
+        const estFormatted = formatDateTime(eventDate, -5); // EST time (UTC-5)
+        return {
+          utcDate: utcFormatted,
+          estDate: estFormatted,
+          summary: event.summary,
+        };
+      } else {
+        return {
+          utcDate: "No date provided",
+          estDate: "No date provided",
+          summary: event.summary,
+        };
+      }
     });
   } catch (error) {
     console.error("Error fetching events:", error);
