@@ -1,6 +1,6 @@
-// botUtils.js
 const { Routes } = require("discord.js");
 const listEvents = require("./listEvents");
+const createGoogleAuth = require("./googleAuth"); // Import createGoogleAuth if not already imported
 
 async function registerGlobalCommands(rest, commands) {
   try {
@@ -14,7 +14,7 @@ async function registerGlobalCommands(rest, commands) {
   }
 }
 
-function setupEventListeners(client) {
+async function setupEventListeners(client) {
   client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}!`);
   });
@@ -23,16 +23,28 @@ function setupEventListeners(client) {
     if (!interaction.isCommand()) return;
 
     const { commandName } = interaction;
-    console.log("Hello TDW");
 
     if (commandName === "listevents") {
-      await interaction.reply(`${listEvents()}`);
-    }
-
-    if (commandName === "ping") {
+      try {
+        const authClient = await createGoogleAuth();
+        const calendarId =
+          "d7609d4dbe74ca9bebf73103a660889b0149c3585d3445d0e8e167f4430a6906@group.calendar.google.com"; // Replace with your calendar ID
+        const events = await listEvents(authClient, calendarId);
+        if (events.length === 0) {
+          await interaction.reply("No upcoming events found.");
+        } else {
+          let replyMessage = "Upcoming Events:\n";
+          events.forEach((event) => {
+            replyMessage += `${event.date} - ${event.summary}\n`;
+          });
+          await interaction.reply(replyMessage);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        await interaction.reply("Failed to fetch events.");
+      }
+    } else if (commandName === "ping") {
       await interaction.reply("Pong!");
-    } else if (commandName == "listevents") {
-      await interaction.reply(listEvents());
     } else if (commandName === "hello") {
       await interaction.reply("Hello World!");
     } else if (commandName === "lgn") {
