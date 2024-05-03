@@ -15,6 +15,10 @@ const commands = [
     name: "listevents",
     description: "Lists upcoming events from the Google Calendar",
   },
+  {
+    name: "getcalendar",
+    description: "This is where you add/delete events to the calendar",
+  },
 ];
 
 module.exports = commands;
