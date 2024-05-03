@@ -11,6 +11,10 @@ const commands = [
     name: "lgn",
     description: "Replies with LGN is #1!",
   },
+  {
+    name: "listevents",
+    description: "Lists upcoming events from the Google Calendar",
+  },
 ];
 
 module.exports = commands;
