@@ -1,5 +1,6 @@
 // botUtils.js
 const { Routes } = require("discord.js");
+const listEvents = require("./listEvents");
 
 async function registerGlobalCommands(rest, commands) {
   try {
@@ -23,8 +24,11 @@ function setupEventListeners(client) {
 
     const { commandName } = interaction;
     console.log("Hello TDW");
+
     if (commandName === "ping") {
       await interaction.reply("Pong!");
+    } else if (commandName == "listevents") {
+      await interaction.reply(listEvents());
     } else if (commandName === "hello") {
       await interaction.reply("Hello World!");
     } else if (commandName === "lgn") {
